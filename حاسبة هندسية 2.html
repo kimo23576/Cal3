@@ -233,6 +233,59 @@
       text-align: center;
     }
     #scenarioComparison th { background-color: var(--primary-color); color: #fff; }
+    
+    /* Media Queries لجعل النظام متجاوباً */
+    @media (max-width: 768px) {
+      .container {
+        max-width: 95%;
+        margin: 20px auto;
+        padding: 20px;
+      }
+      h1 {
+        font-size: 2em;
+      }
+      h2 {
+        font-size: 1.6em;
+      }
+      h3 {
+        font-size: 1.4em;
+      }
+      input, select, button {
+        font-size: 14px;
+        padding: 8px;
+      }
+      #modeToggle {
+        top: 10px;
+        left: 10px;
+        padding: 8px 16px;
+      }
+      #backToTop {
+        bottom: 20px;
+        right: 10px;
+        font-size: 1.2em;
+        padding: 8px;
+      }
+      #scenarioComparison th, #scenarioComparison td {
+        font-size: 12px;
+        padding: 8px;
+      }
+      .export-buttons button {
+        padding: 8px 12px;
+        font-size: 14px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .container {
+        padding: 15px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+      input, select, button {
+        font-size: 13px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -320,7 +373,7 @@
     <div class="section" data-aos="fade-up">
       <h2>تحليل السيناريوهات</h2>
       <p style="color: #555;">يمكنك تجربة نسب تحميل مختلفة لتعديل الحمل الموزع مؤقتاً، ثم حفظ السيناريو الحالي وعرض جدول مقارنة لجميع السيناريوهات:</p>
-      <div style="display:flex; gap:10px; margin-bottom:20px;">
+      <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap: wrap;">
         <button onclick="calculateScenario(0.8)" class="btn-animate"><i class="fas fa-percentage"></i> 80%</button>
         <button onclick="calculateScenario(1)" class="btn-animate"><i class="fas fa-percentage"></i> 100%</button>
         <button onclick="calculateScenario(1.2)" class="btn-animate"><i class="fas fa-percentage"></i> 120%</button>
@@ -337,7 +390,7 @@
       <ul>
         <li><strong>حساب عزم الانحناء (M):</strong> تُحسب المعادلة M = w × L² ⁄ n حيث يُختار n = 8 للعتبة البسيطة و n = 10 للعتبة المستمرة. يتم تحويل الناتج من kN·m إلى N·mm بضربه في 1,000,000.</li>
         <li><strong>حساب المطلب المقطعي المطلوب (S_req):</strong> تُحسب المعادلة S_req = M_Nmm / f، حيث f هي مقاومة الخرسانة (f'c) بوحدة MPa (1 MPa = 1 N/mm²).</li>
-        <li><strong>تصميم المقطع:</strong> مع افتراض أن المقطع مستطيل وأن العرض (b) = 0.4 × d، يكون المطلب المقطعي للمقطع: S_actual = (b × d²) / 6 = 0.06667 × d³. يتم استخراج العمق (d) المقترح بواسطة: d = cubeRoot(S_req / 0.06667) ويتم تحديد العرض (b) كـ b = 0.4 × d.</li>
+        <li><strong>تصميم المقطع:</strong> مع افتراض أن المقطع مستطيل وأن b = 0.4 × d، يكون المطلب المقطعي للمقطع: S_actual = (b × d²)/6 = 0.06667 × d³. يتم استخراج العمق (d) المقترح بواسطة: d = cubeRoot(S_req / 0.06667) ويتم تحديد العرض (b) كـ b = 0.4 × d.</li>
         <li><strong>حساب الإجهاد الناتج (σ):</strong> تُحسب المعادلة σ = M_Nmm / ((b × d²)/6) لتحديد مدى كفاية التصميم.</li>
         <li><strong>حساب كمية التسليح (Aₛ):</strong> إذا تم تفعيل خيار التسليح، تُحسب مساحة التسليح المطلوبة باستخدام المعادلة Aₛ = M_Nmm / (0.87 × fy × (d - cover)).</li>
         <li><strong>حساب نسبة التسليح (ρ):</strong> تُحسب نسبة التسليح ρ = Aₛ / (b × d) وتُعبَّر عادةً كنسبة مئوية، وتُقارن مع النطاقات القياسية (عادةً بين 0.2% و4%).</li>
@@ -479,10 +532,6 @@
       
       // حساب المطلب المقطعي المطلوب (S_req): S_req = M_Nmm / f
       let S_req = M_Nmm / f;
-      
-      // تصميم المقطع: نفترض أن المقطع مستطيل وأن b = 0.4 × d
-      // إذ يكون المطلب المقطعي للمقطع: S_actual = (b × d²)/6 = 0.06667 × d³
-      // نستخدم المعادلة لحساب d (لكن هنا d مدخلة من المستخدم؛ يمكن استخدامها للتحقق)
       
       // حساب الإجهاد الناتج (σ): σ = M_Nmm / ((b × d²)/6)
       let sigma = M_Nmm / ((b * Math.pow(d, 2)) / 6);
